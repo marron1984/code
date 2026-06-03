@@ -5,10 +5,10 @@ export function renderLessonSidebar(lessons: Lesson[], currentLessonId: string, 
   return `
     <aside class="sidebar" aria-label="レッスン一覧">
       <div class="sidebar__intro">
-        <span class="logo-mark">☁️</span>
+        <span class="logo-mark">🤖</span>
         <div>
-          <p class="eyebrow">Browser Learning</p>
-          <h1>クラウドコード入門</h1>
+          <p class="eyebrow">Step by Step</p>
+          <h1>Claude Code 入門</h1>
         </div>
       </div>
       <nav class="lesson-nav">
