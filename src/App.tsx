@@ -32,7 +32,7 @@ function render() {
           <div>
             <p class="eyebrow">進捗</p>
             <h2>${progressPercent}% 完了</h2>
-            <p>${state.completedLessonIds.size} / ${lessons.length} 章を完了しました。クイズに答えて、章末のボタンで記録しましょう。</p>
+            <p>${state.completedLessonIds.size} / ${lessons.length} 章を完了しました。超入門から実務まで、1章ずつ進めましょう。クイズに答えて、章末のボタンで記録できます。</p>
           </div>
           <div class="progress-ring" aria-hidden="true" style="--progress: ${progressPercent}%">
             <span>${progressPercent}%</span>
