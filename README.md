@@ -20,6 +20,6 @@ npm run dev
 - Build Command: `npm run build`
 - Output Directory: `dist`
 
-Vercel のログに `Running build in Washington, D.C., USA (East) – iad1` と表示される行は、ビルドが開始されたことを示す通常ログです。失敗の原因は、その後に表示される赤字のエラー行を確認します。
+
 
 過去に `sh: line 1: tsc: command not found` が出た場合は、TypeScript コンパイラがデプロイ環境にインストールされていない状態です。このプロジェクトでは `typescript` を `devDependencies` に追加しているため、Vercel の `npm install` 後に `npm run build` で `tsc` が利用できます。
