@@ -1,0 +1,11 @@
+{
+  "name": "cloud-code-learning-tool",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run build && node scripts/serve-dist.mjs",
+    "build": "rm -rf dist && tsc -p tsconfig.app.json && node scripts/build.mjs"
+  },
+  "devDependencies": {}
+}
