@@ -6,7 +6,7 @@ export type QuizAnswers = Record<number, number>;
 export function renderQuiz(questions: QuizQuestion[], selectedAnswers: QuizAnswers) {
   return `
     <section class="quiz" aria-labelledby="quiz-title">
-      <p class="eyebrow" id="quiz-title">理解度チェック</p>
+      <p class="eyebrow" id="quiz-title">🧩 クイズで確認</p>
       ${questions.map((question, questionIndex) => renderQuestion(question, questionIndex, selectedAnswers)).join('')}
     </section>
   `;

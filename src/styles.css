@@ -98,19 +98,28 @@ button {
 .lesson-nav__item:hover,
 .lesson-nav__item--active {
   transform: translateY(-1px);
-  border-color: rgb(112 185 255 / 70%);
+  border-color: color-mix(in srgb, var(--accent, #70b9ff) 80%, white);
   background: rgb(255 255 255 / 16%);
 }
 
-.lesson-nav__number,
-.lesson-nav__status {
+.lesson-nav__item--active {
+  box-shadow: inset 4px 0 0 var(--accent, #70b9ff);
+}
+
+.lesson-nav__icon {
   display: grid;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   place-items: center;
-  border-radius: 999px;
-  background: rgb(255 255 255 / 14%);
-  font-weight: 800;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent, #2f7df6) 55%, transparent);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.lesson-nav__status {
+  font-size: 20px;
+  line-height: 1;
 }
 
 .lesson-nav__item small {
@@ -177,31 +186,124 @@ button {
 
 .lesson-hero {
   display: flex;
-  gap: 18px;
-  align-items: flex-start;
-  justify-content: space-between;
+  gap: 22px;
+  align-items: center;
   padding-bottom: 24px;
   border-bottom: 1px solid #e6eefb;
 }
 
+.lesson-hero__icon {
+  display: grid;
+  flex: 0 0 auto;
+  width: 96px;
+  height: 96px;
+  place-items: center;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--accent, #2f7df6) 16%, white);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--accent, #2f7df6) 28%, transparent);
+  font-size: 52px;
+  line-height: 1;
+}
+
 .lesson-hero h2 {
-  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-size: clamp(1.7rem, 3.4vw, 2.8rem);
 }
 
-.lesson-hero__goal {
+.lesson-hero__summary {
   max-width: 760px;
-  margin: 14px 0 0;
-  color: #4d5f7d;
-  font-size: 1.08rem;
+  margin: 10px 0 0;
+  color: #3a4c6b;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
-.lesson-badge {
-  padding: 8px 14px;
-  border-radius: 999px;
-  color: #0f4d35;
-  background: #dffbea;
+/* この章のゴール */
+.goal-banner {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-top: 20px;
+  padding: 16px 18px;
+  border: 0;
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--accent, #2f7df6) 12%, white);
+}
+
+.goal-banner__icon {
+  font-size: 30px;
+}
+
+.goal-banner p:last-child {
+  margin: 0;
+  font-size: 1.05rem;
   font-weight: 800;
-  white-space: nowrap;
+  color: #1f2d44;
+}
+
+/* やることの流れ（この章の主役） */
+.flow {
+  margin-top: 24px;
+}
+
+.flow__title {
+  margin-bottom: 12px;
+  color: var(--accent, #2f7df6);
+}
+
+.flow__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flow__step {
+  position: relative;
+  display: flex;
+  flex: 1 1 150px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 130px;
+  padding: 18px 14px 16px;
+  text-align: center;
+  border: 2px solid color-mix(in srgb, var(--accent, #2f7df6) 30%, white);
+  border-radius: 22px;
+  background: white;
+  box-shadow: 0 10px 26px rgb(45 91 157 / 10%);
+}
+
+.flow__icon {
+  font-size: 40px;
+  line-height: 1;
+}
+
+.flow__num {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent, #2f7df6);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.flow__text {
+  color: #2b3a54;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+.flow__arrow {
+  align-self: center;
+  color: color-mix(in srgb, var(--accent, #2f7df6) 70%, #94a3b8);
+  font-size: 1.6rem;
+  font-weight: 900;
 }
 
 .term-panel,
@@ -219,20 +321,30 @@ button {
 }
 
 .term {
-  padding: 14px;
-  border-radius: 18px;
+  padding: 16px;
+  text-align: center;
+  border-radius: 20px;
   background: #f5f8ff;
+  border: 1px solid #e6eefb;
 }
 
-.term strong,
-.term span {
+.term__icon {
   display: block;
+  margin-bottom: 6px;
+  font-size: 34px;
+  line-height: 1;
 }
 
-.term span {
+.term strong {
+  display: block;
+  font-size: 1.02rem;
+}
+
+.term__desc {
+  display: block;
   margin-top: 6px;
   color: #53637e;
-  font-size: 0.94rem;
+  font-size: 0.92rem;
 }
 
 .lesson-body {
@@ -330,8 +442,16 @@ pre {
 }
 
 .next-action {
+  display: flex;
+  gap: 14px;
+  align-items: center;
   color: #29405f;
   background: linear-gradient(135deg, #eef7ff, #f7f1ff);
+}
+
+.next-action__icon {
+  font-size: 30px;
+  line-height: 1;
 }
 
 .next-action p:last-child {
@@ -382,6 +502,24 @@ pre {
   }
 }
 
+@media (max-width: 720px) {
+  .flow__steps {
+    flex-direction: column;
+  }
+
+  .flow__step {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .flow__arrow {
+    transform: rotate(90deg);
+  }
+}
+
 @media (max-width: 560px) {
   .main-content,
   .sidebar,
@@ -389,11 +527,17 @@ pre {
     padding: 18px;
   }
 
-  .lesson-nav__item {
-    grid-template-columns: auto 1fr;
+  .lesson-hero {
+    flex-direction: row;
   }
 
-  .lesson-nav__status {
-    display: none;
+  .lesson-hero__icon {
+    width: 64px;
+    height: 64px;
+    font-size: 34px;
+  }
+
+  .lesson-nav__item {
+    grid-template-columns: auto 1fr auto;
   }
 }

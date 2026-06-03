@@ -21,13 +21,14 @@ export function renderLessonSidebar(lessons: Lesson[], currentLessonId: string, 
               type="button"
               data-lesson-id="${escapeHtml(lesson.id)}"
               aria-current="${isCurrent ? 'step' : 'false'}"
+              style="--accent: ${escapeHtml(lesson.accent)}"
             >
-              <span class="lesson-nav__number">${String(index + 1).padStart(2, '0')}</span>
+              <span class="lesson-nav__icon" aria-hidden="true">${escapeHtml(lesson.icon)}</span>
               <span>
-                <strong>${escapeHtml(lesson.title)}</strong>
+                <strong>${String(index + 1).padStart(2, '0')}. ${escapeHtml(lesson.title)}</strong>
                 <small>${escapeHtml(lesson.badge)}・${escapeHtml(lesson.duration)}</small>
               </span>
-              <span class="lesson-nav__status" aria-label="${isCompleted ? '完了' : '未完了'}">${isCompleted ? '✓' : '○'}</span>
+              <span class="lesson-nav__status" aria-label="${isCompleted ? '完了' : '未完了'}">${isCompleted ? '✅' : '⭕'}</span>
             </button>
           `;
         }).join('')}
