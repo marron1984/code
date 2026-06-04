@@ -1,6 +1,19 @@
-import type { Lesson } from '../data/lessons.js';
+import type { DemoLine, Lesson } from '../data/lessons.js';
 import { escapeHtml, renderCodeBlock } from './CodeBlock.js';
 import { renderQuiz, type QuizAnswers } from './Quiz.js';
+
+function roleLabel(role: DemoLine['role']) {
+  switch (role) {
+    case 'you':
+      return 'あなた';
+    case 'ai':
+      return '🤖 Claude';
+    case 'cmd':
+      return '$';
+    case 'out':
+      return '↳';
+  }
+}
 
 export function renderLessonViewer(
   lesson: Lesson,
@@ -27,6 +40,21 @@ export function renderLessonViewer(
         <div>
           <p class="eyebrow">この章のゴール</p>
           <p>${escapeHtml(lesson.goal)}</p>
+        </div>
+      </section>
+
+      <section class="demo" aria-label="自動再生デモ">
+        <div class="demo__bar">
+          <span class="demo__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="demo__label">▶ 動きを見てみよう（自動でくり返し再生）</span>
+        </div>
+        <div class="demo__screen" data-demo>
+          ${lesson.demo.map((line) => `
+            <div class="demo__line demo__line--${escapeHtml(line.role)}" data-demo-line data-text="${escapeHtml(line.text)}">
+              <span class="demo__role" aria-hidden="true">${escapeHtml(roleLabel(line.role))}</span>
+              <span class="demo__type"></span>
+            </div>
+          `).join('')}
         </div>
       </section>
 

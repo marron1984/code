@@ -1,6 +1,7 @@
 import { renderLessonSidebar } from './components/LessonSidebar.js';
 import { renderLessonViewer } from './components/LessonViewer.js';
 import { lessons } from './data/lessons.js';
+import { startDemo } from './demo.js';
 
 const state: {
   currentLessonId: string;
@@ -48,6 +49,9 @@ function render() {
       </main>
     </div>
   `;
+
+  // 画面を作り直したら、自動再生デモを開始（前のタイマーは内部で止まる）
+  startDemo();
 }
 
 function currentLessonIndex() {

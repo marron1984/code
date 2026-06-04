@@ -16,6 +16,13 @@ export type Term = {
   description: string;
 };
 
+/** 自動再生デモの1行（画面録画のセリフ） */
+export type DemoLine = {
+  /** you=あなた / ai=Claude / cmd=コマンド / out=出力や差分 */
+  role: 'you' | 'ai' | 'cmd' | 'out';
+  text: string;
+};
+
 export type Lesson = {
   id: string;
   title: string;
@@ -29,6 +36,8 @@ export type Lesson = {
   goal: string;
   /** 一言サマリー（1行で要点） */
   summary: string;
+  /** 自動再生される画面録画風デモ（タイプされていく） */
+  demo: DemoLine[];
   /** 絵で追うステップフロー（この章の主役） */
   steps: Step[];
   /** 用語の絵カード */
@@ -56,6 +65,12 @@ export const lessons: Lesson[] = [
     icon: '🤖',
     goal: 'Claude Code が「何をしてくれる相棒」なのかをイメージできる。',
     summary: 'ふだんの言葉で頼むと、AIが代わりにコードを書いてくれる相棒。',
+    demo: [
+      { role: 'you', text: 'こんにちは。何ができますか？' },
+      { role: 'ai', text: 'コードを書いたり直したりできます！' },
+      { role: 'you', text: 'このフォルダの中身を教えて。' },
+      { role: 'ai', text: 'index.html があります。練習用のページですね。' },
+    ],
     steps: [
       { icon: '🗣️', text: 'あなたが「こうしたい」と話す' },
       { icon: '🤖', text: 'AIがコードを書く・直す' },
@@ -92,6 +107,12 @@ export const lessons: Lesson[] = [
     icon: '🛠️',
     goal: 'インストールから最初のログインまでを自分で進められる。',
     summary: 'Node.js を入れる → コマンド1回で導入 → 起動してログイン。',
+    demo: [
+      { role: 'cmd', text: 'npm install -g @anthropic-ai/claude-code' },
+      { role: 'out', text: '✓ インストールが完了しました' },
+      { role: 'cmd', text: 'claude' },
+      { role: 'out', text: 'ようこそ！ ブラウザでログインしてください 🔑' },
+    ],
     steps: [
       { icon: '⬇️', text: 'Node.js を入れる（土台）' },
       { icon: '📦', text: 'コマンド1回で Claude Code 導入' },
@@ -130,6 +151,12 @@ export const lessons: Lesson[] = [
     icon: '💬',
     goal: '起動して、日本語で頼んで、安全に終了するまでできる。',
     summary: 'フォルダに移動 → 起動 → 言葉で頼む → /exit で終了。',
+    demo: [
+      { role: 'cmd', text: 'cd my-project' },
+      { role: 'cmd', text: 'claude' },
+      { role: 'you', text: 'README.md の一番上に「練習中」と1行足して。' },
+      { role: 'ai', text: '追加しました ✅  /exit で終われます。' },
+    ],
     steps: [
       { icon: '📂', text: 'cd でフォルダに移動' },
       { icon: '🚀', text: 'claude で起動' },
@@ -164,6 +191,13 @@ export const lessons: Lesson[] = [
     icon: '📝',
     goal: '差分を確認し、許可するかどうかを自分で選べる。',
     summary: '勝手に上書きしない。差分を見せて「OK?」と聞いてくれる。',
+    demo: [
+      { role: 'you', text: 'hello.html を作って。大きな見出しで挨拶を表示して。' },
+      { role: 'ai', text: 'この差分で進めていい？' },
+      { role: 'out', text: '+ <h1>こんにちは、Claude Code！</h1>' },
+      { role: 'you', text: 'はい！' },
+      { role: 'ai', text: '作成しました 🎉' },
+    ],
     steps: [
       { icon: '🗣️', text: '「○○を作って」と頼む' },
       { icon: '🟢', text: '差分が出る（緑=追加 / 赤=削除）' },
@@ -202,6 +236,12 @@ export const lessons: Lesson[] = [
     icon: '⚡',
     goal: 'よく使うコマンドの役割を知り、使い分けられる。',
     summary: '/ で始める便利ボタン。迷ったら /help、混乱したら /clear。',
+    demo: [
+      { role: 'you', text: '/help' },
+      { role: 'out', text: '使えるコマンドの一覧を表示しました 📖' },
+      { role: 'you', text: '/clear' },
+      { role: 'out', text: '会話をリセットしました 🧹 頭がすっきり！' },
+    ],
     steps: [
       { icon: '❓', text: '/help … 一覧を見る' },
       { icon: '🧹', text: '/clear … 会話をリセット' },
@@ -240,6 +280,13 @@ export const lessons: Lesson[] = [
     icon: '📜',
     goal: 'CLAUDE.md の役割を理解し、約束ごとを書ける。',
     summary: 'プロジェクトのフォルダに置く「AIへの手紙」。/init でたたき台を自動生成。',
+    demo: [
+      { role: 'you', text: '/init' },
+      { role: 'ai', text: 'フォルダを調べています…' },
+      { role: 'ai', text: 'CLAUDE.md を作りました 📜' },
+      { role: 'you', text: '「コメントは日本語で」のルールも足して。' },
+      { role: 'ai', text: '追記しました ✅' },
+    ],
     steps: [
       { icon: '📋', text: '/init でたたき台を自動生成' },
       { icon: '✍️', text: 'ルールや説明を書き足す' },
@@ -280,6 +327,12 @@ export const lessons: Lesson[] = [
     icon: '🎯',
     goal: '「目的・現状・期待・制約」を入れて、伝わる頼み方ができる。',
     summary: '具体的なほど思いどおり。4点セットで伝えるのがコツ。',
+    demo: [
+      { role: 'you', text: '目的・現状・期待・制約をそろえて頼むね。' },
+      { role: 'you', text: '完了ボタンを、初心者にも読めるコードで追加して。' },
+      { role: 'ai', text: '4点セット、とても分かりやすいです！' },
+      { role: 'ai', text: 'ボタンを追加しました ✨' },
+    ],
     steps: [
       { icon: '🎯', text: '目的：何のため？' },
       { icon: '📍', text: '現状：いまどうなってる？' },
@@ -316,6 +369,12 @@ export const lessons: Lesson[] = [
     icon: '🗺️',
     goal: '計画を確認してから、安全に進められる。',
     summary: '大きめの頼みは「まず計画」。読むだけで作戦を見せてくれる。',
+    demo: [
+      { role: 'you', text: 'ログイン画面を追加したい。手は動かさず計画だけ見せて。' },
+      { role: 'ai', text: '①login.htmlを作る ②入力欄 ③ボタン。これでいい？' },
+      { role: 'you', text: 'OK、その計画で進めて。' },
+      { role: 'ai', text: '承認ありがとう。実行しました ✅' },
+    ],
     steps: [
       { icon: '🗺️', text: '「まず計画を見せて」と頼む' },
       { icon: '👀', text: '読み取りだけで作戦を提案' },
@@ -352,6 +411,12 @@ export const lessons: Lesson[] = [
     icon: '🐞',
     goal: 'エラーをそのまま伝え、一緒に原因を探して直せる。',
     summary: 'エラーは失敗じゃなくヒント。まるごと貼って「直して」でOK。',
+    demo: [
+      { role: 'cmd', text: 'npm run dev' },
+      { role: 'out', text: "Error: Cannot find module './utils'  (index.js:3)" },
+      { role: 'you', text: 'このエラーをまるごと貼ります。直して。' },
+      { role: 'ai', text: 'パスを修正しました。もう一度試して 🔧' },
+    ],
     steps: [
       { icon: '🐞', text: 'エラーが出る（=ヒント）' },
       { icon: '📋', text: 'エラー文をまるごとコピー' },
@@ -390,6 +455,13 @@ export const lessons: Lesson[] = [
     icon: '🌳',
     goal: 'コミット・ブランチ・PR の役割を理解して頼める。',
     summary: 'こまめに保存（コミット）。枝道（ブランチ）で安全に試す。',
+    demo: [
+      { role: 'you', text: 'ブランチ「feature/login」を作って。' },
+      { role: 'cmd', text: 'git checkout -b feature/login' },
+      { role: 'you', text: 'いまの変更を分かりやすくコミットして。' },
+      { role: 'cmd', text: 'git commit -m "ログイン画面を追加"' },
+      { role: 'ai', text: 'コミットしました 💾' },
+    ],
     steps: [
       { icon: '🌿', text: 'ブランチ（枝道）を作る' },
       { icon: '✍️', text: '変更する' },
@@ -429,6 +501,13 @@ export const lessons: Lesson[] = [
     icon: '🏁',
     goal: '便利な拡張を知り、実務の1サイクルを説明できる。',
     summary: '頼む→確認→動かす→直す→コミット→PR。これが実務の1周。',
+    demo: [
+      { role: 'you', text: 'profile.html を作って、名前と好きなこと3つを表示して。' },
+      { role: 'ai', text: '作りました。差分を確認して 👀' },
+      { role: 'you', text: '見出しを青にして、コミットして。' },
+      { role: 'ai', text: '変更してコミット完了 🎉' },
+      { role: 'ai', text: '1サイクル完走！ おつかれさま 🏁' },
+    ],
     steps: [
       { icon: '🗣️', text: '具体的に頼む（必要なら計画）' },
       { icon: '✅', text: '差分を確認して許可' },

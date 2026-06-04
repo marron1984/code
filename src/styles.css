@@ -240,6 +240,133 @@ button {
   color: #1f2d44;
 }
 
+/* 自動再生デモ（画面録画風） */
+.demo {
+  margin-top: 22px;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgb(15 23 42 / 28%);
+}
+
+.demo__bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 16px;
+  background: #1f2937;
+}
+
+.demo__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.demo__dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #475569;
+}
+
+.demo__dots i:nth-child(1) { background: #f87171; }
+.demo__dots i:nth-child(2) { background: #fbbf24; }
+.demo__dots i:nth-child(3) { background: #34d399; }
+
+.demo__label {
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.demo__screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 190px;
+  padding: 18px;
+  background: #0f172a;
+}
+
+.demo__line {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.demo__line.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.demo__role {
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.demo__type {
+  max-width: 84%;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.demo__line.is-typing .demo__type::after {
+  content: '▋';
+  margin-left: 1px;
+  opacity: 0.85;
+  animation: demoCaret 1s steps(1) infinite;
+}
+
+@keyframes demoCaret {
+  50% { opacity: 0; }
+}
+
+/* 話し手ごとの見た目 */
+.demo__line--you {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.demo__line--you .demo__role { color: #9cc4ff; }
+
+.demo__line--you .demo__type {
+  padding: 9px 13px;
+  color: #fff;
+  background: #2f7df6;
+  border-radius: 16px 16px 3px 16px;
+  text-align: left;
+}
+
+.demo__line--ai .demo__role { color: #7dd3fc; }
+
+.demo__line--ai .demo__type {
+  padding: 9px 13px;
+  color: #e2e8f0;
+  background: #1e293b;
+  border-radius: 16px 16px 16px 3px;
+}
+
+.demo__line--cmd .demo__role,
+.demo__line--cmd .demo__type {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.demo__line--cmd .demo__role { color: #86efac; }
+.demo__line--cmd .demo__type { color: #d1fae5; }
+
+.demo__line--out .demo__role,
+.demo__line--out .demo__type {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.demo__line--out .demo__role { color: #64748b; }
+.demo__line--out .demo__type { color: #94a3b8; }
+
 /* やることの流れ（この章の主役） */
 .flow {
   margin-top: 24px;
