@@ -1,5 +1,6 @@
 import type { DemoLine, Lesson } from '../data/lessons.js';
 import { escapeHtml, renderCodeBlock } from './CodeBlock.js';
+import { renderPractice, type PracticeEntry } from './Practice.js';
 import { renderQuiz, type QuizAnswers } from './Quiz.js';
 
 function roleLabel(role: DemoLine['role']) {
@@ -21,6 +22,7 @@ export function renderLessonViewer(
   totalLessons: number,
   selectedAnswers: QuizAnswers,
   isCompleted: boolean,
+  practiceLog: PracticeEntry[],
 ) {
   const accent = escapeHtml(lesson.accent);
 
@@ -47,6 +49,10 @@ export function renderLessonViewer(
         <div class="demo__bar">
           <span class="demo__dots" aria-hidden="true"><i></i><i></i><i></i></span>
           <span class="demo__label">▶ 動きを見てみよう（自動でくり返し再生）</span>
+          <span class="demo__controls">
+            <button class="demo__btn" type="button" data-action="demo-toggle" aria-label="一時停止 / 再生">⏸</button>
+            <button class="demo__btn" type="button" data-action="demo-replay" aria-label="最初から再生">↻</button>
+          </span>
         </div>
         <div class="demo__screen" data-demo>
           ${lesson.demo.map((line) => `
@@ -72,19 +78,25 @@ export function renderLessonViewer(
       </section>
 
       <section class="term-panel" aria-labelledby="terms-title">
-        <p class="eyebrow" id="terms-title">📚 言葉カード</p>
+        <p class="eyebrow" id="terms-title">📚 言葉カード（タップでめくれる）</p>
         <div class="term-grid">
           ${lesson.terms.map((term) => `
-            <div class="term">
-              <span class="term__icon" aria-hidden="true">${escapeHtml(term.icon)}</span>
-              <strong>${escapeHtml(term.term)}</strong>
-              <span class="term__desc">${escapeHtml(term.description)}</span>
-            </div>
+            <button class="term" type="button" data-term-card>
+              <span class="term__inner">
+                <span class="term__front">
+                  <span class="term__icon" aria-hidden="true">${escapeHtml(term.icon)}</span>
+                  <strong>${escapeHtml(term.term)}</strong>
+                  <span class="term__hint">タップで意味を見る 👆</span>
+                </span>
+                <span class="term__back">${escapeHtml(term.description)}</span>
+              </span>
+            </button>
           `).join('')}
         </div>
       </section>
 
       ${renderCodeBlock(lesson.codeTitle, lesson.code)}
+      ${renderPractice(lesson, practiceLog)}
       ${renderQuiz(lesson.quiz, selectedAnswers)}
 
       <section class="next-action" aria-label="次にやること">

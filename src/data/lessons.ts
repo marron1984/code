@@ -23,6 +23,28 @@ export type DemoLine = {
   text: string;
 };
 
+/** 「自分でやってみよう」の選択肢ボタン1つ分 */
+export type PracticeSuggestion = {
+  /** チップに表示する短いラベル */
+  label: string;
+  /** 押したときに送信される文章 */
+  input: string;
+  /** 自由入力とのマッチングに使う言葉 */
+  keywords: string[];
+  /** Claude役の返事 */
+  reply: string;
+};
+
+/** 章ごとの体験コーナー（疑似Claude Codeとのやりとり） */
+export type Practice = {
+  /** 入力欄の上に出す誘い文句 */
+  prompt: string;
+  placeholder: string;
+  /** どの選択肢にも合わないときの返事 */
+  fallback: string;
+  suggestions: PracticeSuggestion[];
+};
+
 export type Lesson = {
   id: string;
   title: string;
@@ -38,6 +60,8 @@ export type Lesson = {
   summary: string;
   /** 自動再生される画面録画風デモ（タイプされていく） */
   demo: DemoLine[];
+  /** 自分で打って試せる体験コーナー */
+  practice: Practice;
   /** 絵で追うステップフロー（この章の主役） */
   steps: Step[];
   /** 用語の絵カード */
@@ -71,6 +95,31 @@ export const lessons: Lesson[] = [
       { role: 'you', text: 'このフォルダの中身を教えて。' },
       { role: 'ai', text: 'index.html があります。練習用のページですね。' },
     ],
+    practice: {
+      prompt: 'Claude Code に話しかけてみよう',
+      placeholder: '自由に書いてもOK（例: こんにちは）',
+      fallback: 'なるほど！「こんにちは」や「何ができるの？」とも聞いてみてね 😊',
+      suggestions: [
+        {
+          label: '👋 こんにちは',
+          input: 'こんにちは！',
+          keywords: ['こんにちは', 'やあ', 'hello', 'はじめまして'],
+          reply: 'こんにちは！ ぼくは Claude Code。コードを書く・直す・説明するのが得意です 🤖',
+        },
+        {
+          label: '🤔 何ができるの？',
+          input: '何ができるの？',
+          keywords: ['できる', 'なに', '何'],
+          reply: 'ファイル作成、エラー直し、Gitの手伝いなど。ふだんの言葉で頼んでくれればOK！',
+        },
+        {
+          label: '📂 フォルダに何がある？',
+          input: 'このフォルダには何がある？',
+          keywords: ['フォルダ', 'ファイル', '中身'],
+          reply: 'index.html と README.md がありますよ 📂 開いて説明することもできます。',
+        },
+      ],
+    },
     steps: [
       { icon: '🗣️', text: 'あなたが「こうしたい」と話す' },
       { icon: '🤖', text: 'AIがコードを書く・直す' },
@@ -113,6 +162,31 @@ export const lessons: Lesson[] = [
       { role: 'cmd', text: 'claude' },
       { role: 'out', text: 'ようこそ！ ブラウザでログインしてください 🔑' },
     ],
+    practice: {
+      prompt: 'インストールのコマンドを順番に打ってみよう',
+      placeholder: 'コマンドを入力（例: claude --version）',
+      fallback: 'うまく動かない？ まずは上のボタンの順に試してみよう 💡',
+      suggestions: [
+        {
+          label: '📦 npm install -g …',
+          input: 'npm install -g @anthropic-ai/claude-code',
+          keywords: ['install', 'インストール'],
+          reply: '✓ インストール完了！ 次は claude --version で確認してみよう',
+        },
+        {
+          label: '🔍 claude --version',
+          input: 'claude --version',
+          keywords: ['version', 'バージョン'],
+          reply: 'claude v2.0.1 — ちゃんと入っています ✅ あとは起動するだけ！',
+        },
+        {
+          label: '🚀 claude',
+          input: 'claude',
+          keywords: ['claude', '起動'],
+          reply: 'ようこそ！ ブラウザが開くので、画面の案内にしたがってログインしてね 🔑',
+        },
+      ],
+    },
     steps: [
       { icon: '⬇️', text: 'Node.js を入れる（土台）' },
       { icon: '📦', text: 'コマンド1回で Claude Code 導入' },
@@ -157,6 +231,31 @@ export const lessons: Lesson[] = [
       { role: 'you', text: 'README.md の一番上に「練習中」と1行足して。' },
       { role: 'ai', text: '追加しました ✅  /exit で終われます。' },
     ],
+    practice: {
+      prompt: '起動から終了までを体験してみよう',
+      placeholder: '入力してみよう（例: cd my-project）',
+      fallback: 'いいですね！ ためしに /exit で「終わる練習」もしてみよう 👋',
+      suggestions: [
+        {
+          label: '📂 cd my-project',
+          input: 'cd my-project',
+          keywords: ['cd'],
+          reply: '📂 my-project に移動しました。ここで claude と打つと起動できるよ。',
+        },
+        {
+          label: '🚀 claude で起動',
+          input: 'claude',
+          keywords: ['claude', '起動'],
+          reply: 'Claude Code を起動しました！ ふだんの言葉で話しかけてみてね。',
+        },
+        {
+          label: '👋 /exit で終了',
+          input: '/exit',
+          keywords: ['exit', '終了', 'おわり'],
+          reply: '👋 おつかれさま！ また claude と打てばいつでも会えます。',
+        },
+      ],
+    },
     steps: [
       { icon: '📂', text: 'cd でフォルダに移動' },
       { icon: '🚀', text: 'claude で起動' },
@@ -198,6 +297,31 @@ export const lessons: Lesson[] = [
       { role: 'you', text: 'はい！' },
       { role: 'ai', text: '作成しました 🎉' },
     ],
+    practice: {
+      prompt: 'ファイル作成と「許可」を体験してみよう',
+      placeholder: '頼んでみよう（例: hello.html を作って）',
+      fallback: '「○○を作って」と頼むと、差分を見せて確認するよ。「はい」「いいえ」で返事してね。',
+      suggestions: [
+        {
+          label: '📝 hello.html を作って',
+          input: 'hello.html を作って、大きな見出しで挨拶を表示して',
+          keywords: ['作って', 'つくって', 'hello'],
+          reply: 'この差分でいい？  ＋ <h1>こんにちは！</h1>  →「はい」か「いいえ」で返事してね。',
+        },
+        {
+          label: '✅ はい',
+          input: 'はい！',
+          keywords: ['はい', 'ok', 'yes', 'うん', 'いいよ'],
+          reply: 'hello.html を作成しました 🎉 勝手に書きかえず、毎回こうして確認するから安心だよ。',
+        },
+        {
+          label: '❌ いいえ',
+          input: 'いいえ、やめておく',
+          keywords: ['いいえ', 'やめ', 'no', 'だめ'],
+          reply: 'わかりました、変更は実行しません。別の頼み方でもう一度どうぞ 👍',
+        },
+      ],
+    },
     steps: [
       { icon: '🗣️', text: '「○○を作って」と頼む' },
       { icon: '🟢', text: '差分が出る（緑=追加 / 赤=削除）' },
@@ -242,6 +366,31 @@ export const lessons: Lesson[] = [
       { role: 'you', text: '/clear' },
       { role: 'out', text: '会話をリセットしました 🧹 頭がすっきり！' },
     ],
+    practice: {
+      prompt: 'スラッシュコマンドを打ってみよう',
+      placeholder: '/ から始めてみよう（例: /help）',
+      fallback: 'それはコマンドじゃないみたい。/ から始めてみよう（例: /help）⚡',
+      suggestions: [
+        {
+          label: '❓ /help',
+          input: '/help',
+          keywords: ['help', 'ヘルプ'],
+          reply: '📖 使えるコマンド: /clear /init /model /config /exit … 困ったらいつでもどうぞ！',
+        },
+        {
+          label: '🧹 /clear',
+          input: '/clear',
+          keywords: ['clear', 'リセット'],
+          reply: '🧹 会話をリセットしました。頭すっきり！ 新しい話題をどうぞ。',
+        },
+        {
+          label: '🔀 /model',
+          input: '/model',
+          keywords: ['model', 'モデル'],
+          reply: '🔀 AIの頭脳を選べます。じっくり賢く／サクサク速く、目的で切りかえよう。',
+        },
+      ],
+    },
     steps: [
       { icon: '❓', text: '/help … 一覧を見る' },
       { icon: '🧹', text: '/clear … 会話をリセット' },
@@ -287,6 +436,31 @@ export const lessons: Lesson[] = [
       { role: 'you', text: '「コメントは日本語で」のルールも足して。' },
       { role: 'ai', text: '追記しました ✅' },
     ],
+    practice: {
+      prompt: 'CLAUDE.md を作って、ルールを足してみよう',
+      placeholder: '頼んでみよう（例: /init）',
+      fallback: 'まず /init でたたき台を作ってみよう 📜',
+      suggestions: [
+        {
+          label: '📋 /init',
+          input: '/init',
+          keywords: ['init'],
+          reply: 'フォルダを調べました…CLAUDE.md を作りました 📜 中身を自由に直してOK！',
+        },
+        {
+          label: '✍️ ルールを足して',
+          input: '「コメントは日本語で」のルールも足して',
+          keywords: ['ルール', '足して', '追加', '日本語'],
+          reply: 'CLAUDE.md に「コメントはやさしい日本語で」を追記しました ✅ これで毎回守るよ。',
+        },
+        {
+          label: '🤔 何のためにあるの？',
+          input: 'CLAUDE.md は何のためにあるの？',
+          keywords: ['ため', 'なぜ', '何の'],
+          reply: 'ぼくが毎回読む「プロジェクトの説明書」だよ。同じ説明をくり返さなくて済むんだ 📖',
+        },
+      ],
+    },
     steps: [
       { icon: '📋', text: '/init でたたき台を自動生成' },
       { icon: '✍️', text: 'ルールや説明を書き足す' },
@@ -333,6 +507,25 @@ export const lessons: Lesson[] = [
       { role: 'ai', text: '4点セット、とても分かりやすいです！' },
       { role: 'ai', text: 'ボタンを追加しました ✨' },
     ],
+    practice: {
+      prompt: 'ざっくりな頼み方と、4点セットの頼み方を比べてみよう',
+      placeholder: '頼んでみよう（例: いい感じにして）',
+      fallback: '頼みに「目的」と「期待する結果」を足すと、ぐっと伝わるよ 🎯',
+      suggestions: [
+        {
+          label: '😕 いい感じにして',
+          input: 'いい感じにして',
+          keywords: ['いい感じ', 'なんか', 'すごい', 'よろしく'],
+          reply: 'うーん、「いい感じ」だけだと迷っちゃう…🤔 目的・現状・期待・制約を教えて！',
+        },
+        {
+          label: '🎯 4点セットで頼む',
+          input: '目的: 完了ボタンを付けたい / 現状: HTMLのページ / 期待: 押すと「完了！」に変わる / 制約: 初心者にも読めるコードで',
+          keywords: ['目的', '期待', '制約', '現状'],
+          reply: '完璧な頼み方！✨ これならすぐ作れます。具体的なほど思いどおりになるよ。',
+        },
+      ],
+    },
     steps: [
       { icon: '🎯', text: '目的：何のため？' },
       { icon: '📍', text: '現状：いまどうなってる？' },
@@ -375,6 +568,31 @@ export const lessons: Lesson[] = [
       { role: 'you', text: 'OK、その計画で進めて。' },
       { role: 'ai', text: '承認ありがとう。実行しました ✅' },
     ],
+    practice: {
+      prompt: '計画→確認→承認の流れを体験してみよう',
+      placeholder: '頼んでみよう（例: まず計画だけ見せて）',
+      fallback: '大きな変更のときは「まず計画を見せて」と言ってみよう 🗺️',
+      suggestions: [
+        {
+          label: '🗺️ まず計画だけ見せて',
+          input: 'ログイン画面を追加したい。手は動かさず、まず計画だけ見せて',
+          keywords: ['計画', 'プラン', '見せて'],
+          reply: '了解！ ①login.html を作る ②入力欄を置く ③ボタンを置く。この計画でいい？',
+        },
+        {
+          label: '✅ OK、進めて',
+          input: 'OK、その計画で進めて',
+          keywords: ['ok', '進めて', '承認', 'はい', 'いいよ'],
+          reply: '承認ありがとう！ 実行しました ✅ 計画→確認→実行が、安全でいちばん速い流れだよ。',
+        },
+        {
+          label: '🛠️ 計画を直して',
+          input: 'ボタンの色は青にして。計画を直して',
+          keywords: ['直して', '変えて', '青'],
+          reply: '計画を更新したよ。手を動かす前に直せるのがプランモードのいいところ 👍',
+        },
+      ],
+    },
     steps: [
       { icon: '🗺️', text: '「まず計画を見せて」と頼む' },
       { icon: '👀', text: '読み取りだけで作戦を提案' },
@@ -417,6 +635,25 @@ export const lessons: Lesson[] = [
       { role: 'you', text: 'このエラーをまるごと貼ります。直して。' },
       { role: 'ai', text: 'パスを修正しました。もう一度試して 🔧' },
     ],
+    practice: {
+      prompt: '伝え方でどう変わるか、2通り試してみよう',
+      placeholder: 'エラーを報告してみよう',
+      fallback: 'エラー文の最初の1行と行番号が大きなヒントだよ 💡 まるごと貼ってみて。',
+      suggestions: [
+        {
+          label: '😢 「動かない」とだけ言う',
+          input: '動かない',
+          keywords: ['動かない', 'うごかない', 'だめ'],
+          reply: 'うーん、それだけだと手がかりが足りない…🙏 エラー文をまるごと貼ってくれる？',
+        },
+        {
+          label: '📋 エラーをまるごと貼る',
+          input: "Error: Cannot find module './utils' (index.js:3) が出ました。直して",
+          keywords: ['error', 'エラー', 'cannot', 'module'],
+          reply: '原因が分かった！ ファイル名のつづりミスです。修正しました 🔧 もう一度動かしてみて。',
+        },
+      ],
+    },
     steps: [
       { icon: '🐞', text: 'エラーが出る（=ヒント）' },
       { icon: '📋', text: 'エラー文をまるごとコピー' },
@@ -462,6 +699,31 @@ export const lessons: Lesson[] = [
       { role: 'cmd', text: 'git commit -m "ログイン画面を追加"' },
       { role: 'ai', text: 'コミットしました 💾' },
     ],
+    practice: {
+      prompt: 'ブランチ→コミット→PR の流れを頼んでみよう',
+      placeholder: '頼んでみよう（例: コミットして）',
+      fallback: '「ブランチを作って」「コミットして」「PRを作って」の順に試してみよう 🌳',
+      suggestions: [
+        {
+          label: '🌿 ブランチを作って',
+          input: 'ブランチ「feature/login」を作って',
+          keywords: ['ブランチ', 'branch'],
+          reply: 'git checkout -b feature/login — 枝道を作りました 🌿 ここなら安全に試せるよ。',
+        },
+        {
+          label: '💾 コミットして',
+          input: 'いまの変更を分かりやすいメッセージでコミットして',
+          keywords: ['コミット', 'commit', '保存'],
+          reply: 'git commit -m "ログイン画面を追加" — 保存ポイントを作りました 💾 いつでも戻れるよ。',
+        },
+        {
+          label: '📤 PRを作って',
+          input: 'この変更でプルリクエストを作って',
+          keywords: ['pr', 'プルリク', 'プル'],
+          reply: '説明文も書いてPRを作りました 📤 あとは仲間にレビューしてもらおう！',
+        },
+      ],
+    },
     steps: [
       { icon: '🌿', text: 'ブランチ（枝道）を作る' },
       { icon: '✍️', text: '変更する' },
@@ -508,6 +770,31 @@ export const lessons: Lesson[] = [
       { role: 'ai', text: '変更してコミット完了 🎉' },
       { role: 'ai', text: '1サイクル完走！ おつかれさま 🏁' },
     ],
+    practice: {
+      prompt: '気になることを聞いて、最後の1サイクルを回そう',
+      placeholder: '聞いてみよう（例: MCPってなに？）',
+      fallback: '気になることをボタンで聞いてみよう！ 全部聞いたら卒業です 🎓',
+      suggestions: [
+        {
+          label: '🔌 MCPってなに？',
+          input: 'MCPってなに？',
+          keywords: ['mcp'],
+          reply: '外部の道具（データベースやチャットなど）とぼくをつなぐ仕組みだよ。慣れたら試そう 🔌',
+        },
+        {
+          label: '🪝 フックってなに？',
+          input: 'フックってなに？',
+          keywords: ['フック', 'hook'],
+          reply: '「保存したら自動でテスト」みたいに、決まった場面で自動で動く仕掛けだよ 🪝',
+        },
+        {
+          label: '🏁 1サイクル回す',
+          input: 'ミニ演習の1サイクルを回してみたい',
+          keywords: ['サイクル', '回', '演習', 'まわ'],
+          reply: '頼む→確認→直す→コミット→PR…完走です 🏁 きみはもう立派な Claude Code の相棒！',
+        },
+      ],
+    },
     steps: [
       { icon: '🗣️', text: '具体的に頼む（必要なら計画）' },
       { icon: '✅', text: '差分を確認して許可' },

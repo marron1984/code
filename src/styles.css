@@ -278,6 +278,29 @@ button {
   font-weight: 800;
 }
 
+.demo__controls {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.demo__btn {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 0;
+  border-radius: 9px;
+  background: rgb(255 255 255 / 12%);
+  color: #e2e8f0;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.demo__btn:hover {
+  background: rgb(255 255 255 / 24%);
+}
+
 .demo__screen {
   display: flex;
   flex-direction: column;
@@ -367,6 +390,133 @@ button {
 .demo__line--out .demo__role { color: #64748b; }
 .demo__line--out .demo__type { color: #94a3b8; }
 
+/* 自分でやってみよう（体験コーナー） */
+.practice {
+  margin-top: 22px;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgb(15 23 42 / 26%);
+}
+
+.practice__bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 16px;
+  color: #fff;
+  background: color-mix(in srgb, var(--accent, #2f7df6) 72%, #111827);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.practice__screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 120px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 16px 18px;
+  background: #0f172a;
+}
+
+.practice__hint {
+  margin: auto;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.practice__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #111c33;
+  border-top: 1px solid #1e293b;
+}
+
+.practice__chip {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #e8f0ff;
+  color: #1d355f;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.practice__chip:hover {
+  transform: translateY(-2px);
+  background: #d6e6ff;
+}
+
+.practice__inputrow {
+  display: flex;
+  gap: 10px;
+  padding: 4px 16px 16px;
+  background: #111c33;
+}
+
+.practice__input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  border: 2px solid #334155;
+  border-radius: 14px;
+  background: #0b1222;
+  color: #e2e8f0;
+  font: inherit;
+}
+
+.practice__input::placeholder {
+  color: #64748b;
+}
+
+.practice__input:focus {
+  outline: none;
+  border-color: var(--accent, #2f7df6);
+}
+
+.practice__send {
+  flex: 0 0 auto;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--accent, #2f7df6);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.practice__send:hover {
+  filter: brightness(1.1);
+}
+
+/* お祝いの紙吹雪 */
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti i {
+  position: absolute;
+  top: -5vh;
+  width: 10px;
+  height: 16px;
+  border-radius: 3px;
+  animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(112vh) rotate(720deg);
+  }
+}
+
 /* やることの流れ（この章の主役） */
 .flow {
   margin-top: 24px;
@@ -447,31 +597,76 @@ button {
   gap: 12px;
 }
 
+/* めくれる言葉カード（タップで裏返る） */
 .term {
-  padding: 16px;
+  position: relative;
+  min-height: 140px;
+  padding: 0;
   text-align: center;
+  border: 0;
   border-radius: 20px;
-  background: #f5f8ff;
+  background: transparent;
+  cursor: pointer;
+  perspective: 700px;
+  font: inherit;
+  color: inherit;
+}
+
+.term__inner {
+  position: absolute;
+  inset: 0;
+  transition: transform 480ms cubic-bezier(0.3, 1.4, 0.6, 1);
+  transform-style: preserve-3d;
+}
+
+.term--flipped .term__inner {
+  transform: rotateY(180deg);
+}
+
+.term__front,
+.term__back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
   border: 1px solid #e6eefb;
+  border-radius: 20px;
+  backface-visibility: hidden;
+}
+
+.term__front {
+  background: #f5f8ff;
+}
+
+.term__back {
+  background: color-mix(in srgb, var(--accent, #2f7df6) 14%, white);
+  color: #2b3a54;
+  font-size: 0.95rem;
+  font-weight: 700;
+  transform: rotateY(180deg);
 }
 
 .term__icon {
-  display: block;
-  margin-bottom: 6px;
   font-size: 34px;
   line-height: 1;
 }
 
 .term strong {
-  display: block;
   font-size: 1.02rem;
 }
 
-.term__desc {
-  display: block;
-  margin-top: 6px;
-  color: #53637e;
-  font-size: 0.92rem;
+.term__hint {
+  color: #8aa0c4;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.term:hover .term__front {
+  background: #edf3ff;
 }
 
 .lesson-body {
